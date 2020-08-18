@@ -69119,13 +69119,27 @@ var CreatePost = /*#__PURE__*/function (_React$Component) {
         });
       }
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/formSubmit', {
-        name: _this.state.name,
-        description: _this.state.description
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/posts', {
+        value: _this.state.value
       }).then(function (response) {
+        _this.props.addToParentPostArr(response.data);
+
         console.log(response.data);
+
+        _this.setState({
+          alert: {
+            text: 'Tweet added',
+            type: 'success'
+          },
+          value: ''
+        });
       })["catch"](function (error) {
-        console.log(error);
+        _this.setState({
+          alert: {
+            text: error,
+            type: 'danger'
+          }
+        });
       });
     });
 
@@ -69187,6 +69201,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Presontational_Posts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Presontational/Posts */ "./resources/js/components/Presontational/Posts.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -69207,6 +69233,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -69223,6 +69251,15 @@ var Home = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, Home);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "addToPostArr", function (post) {
+      var posts = [post].concat(_toConsumableArray(_this.state.posts));
+
+      _this.setState({
+        posts: posts
+      });
+    });
+
     _this.state = {
       posts: []
     };
@@ -69250,7 +69287,9 @@ var Home = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CreatePost__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Presontational_Posts__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CreatePost__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        addToParentPostArr: this.addToPostArr
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Presontational_Posts__WEBPACK_IMPORTED_MODULE_3__["default"], {
         posts: this.state.posts
       }));
     }
@@ -69331,7 +69370,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-inline align-items-center"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
+        className: "row w-100"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-6"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
@@ -69382,7 +69421,7 @@ function Posts(props) {
   }, props.posts.map(function (post, i) {
     // Return the element. Also pass key
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "card my-2"
+      className: "card my-2 w-100"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "card-body"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Post__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({

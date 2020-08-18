@@ -8,6 +8,10 @@ class Home extends React.Component {
         super(props);
         this.state = {posts: []};
     }
+    addToPostArr = (post) =>{
+        const posts = [post, ...this.state.posts];
+        this.setState({posts: posts});
+    };
     componentDidMount() {
         //get data
         axios.get('/posts/all')
@@ -22,7 +26,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className="container">
-                <CreatePost/>
+                <CreatePost addToParentPostArr={this.addToPostArr}/>
                 <Posts posts={this.state.posts}/>
             </div>
         );

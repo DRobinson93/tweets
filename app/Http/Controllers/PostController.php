@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -35,7 +36,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $request->request->add(['user_id' => $user->id]);
+        $child = $request->all();
+        $child = new Post($child);
+        $child->save();
+        return response(Post::where(['id' => $child->id])->with('user')->first());
     }
 
     /**
@@ -56,7 +62,7 @@ class PostController extends Controller
      */
     public function showAll()
     {
-        return response(Post::with('user')->get());
+        return response(Post::with('user')->orderBy("created_at", 'desc')->get());
     }
 
     /**

@@ -13,7 +13,7 @@ class Post extends React.Component {
     render() {
         return (
             <div className="form-inline align-items-center">
-                <div className="row">
+                <div className="row w-100">
                     <div className="col-6">
                         <h5 className="m-0">{this.props.user.name}</h5>
                         <small>@{this.props.user.name}</small>

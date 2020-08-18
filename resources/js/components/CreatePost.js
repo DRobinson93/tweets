@@ -20,15 +20,21 @@ class CreatePost extends React.Component {
                 alert: {text:'Tweet can not be blank', type:'info'}
             });
         }
-        axios.post('/formSubmit', {
-            name: this.state.name,
-            description: this.state.description
+        axios.post('/posts', {
+            value: this.state.value
         })
-            .then(function (response) {
+            .then(response => {
+                this.props.addToParentPostArr(response.data);
                 console.log(response.data);
+                this.setState({
+                    alert: {text:'Tweet added', type:'success'},
+                    value : ''
+                });
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch(error => {
+                this.setState({
+                    alert: {text:error, type:'danger'}
+                });
             });
     };
     render() {
