@@ -69124,8 +69124,6 @@ var CreatePost = /*#__PURE__*/function (_React$Component) {
       }).then(function (response) {
         _this.props.addToParentPostArr(response.data);
 
-        console.log(response.data);
-
         _this.setState({
           alert: {
             text: 'Tweet added',
@@ -69160,7 +69158,7 @@ var CreatePost = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "sr-only",
         htmlFor: "inlineFormInput"
-      }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+      }, "New Tweet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         onChange: this.handleChange,
         className: "form-control mb-2 col-11",
         id: "inlineFormInput",
@@ -69318,8 +69316,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _presontational_AlertMessage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./presontational/AlertMessage */ "./resources/js/components/presontational/AlertMessage.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./presontational/SocialBtn */ "./resources/js/components/presontational/SocialBtn.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69342,6 +69341,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -69357,9 +69359,17 @@ var Post = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, Post);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "handleLike", function () {
+      _this.setState({
+        highlightHeart: true
+      });
+    });
+
     _this.state = {
       value: '',
-      alert: {}
+      alert: {},
+      highlightHeart: false
     };
     return _this;
   }
@@ -69383,7 +69393,20 @@ var Post = /*#__PURE__*/function (_React$Component) {
         className: "col-12 mt-3 mb-1"
       }, this.props.value), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-12"
-      }, this.props.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_AlertMessage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, this.props.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row w-100"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        icon: "retweet",
+        text: "100"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        icon: "comment",
+        text: "100"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onClick: this.handleLike,
+        text: "100",
+        icon: "heart",
+        highlight: this.state.highlightHeart
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_AlertMessage__WEBPACK_IMPORTED_MODULE_1__["default"], {
         show: "true",
         type: this.state.alert.type,
         text: this.state.alert.text
@@ -69462,6 +69485,39 @@ var AlertMessage = function AlertMessage(props) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (AlertMessage);
+
+/***/ }),
+
+/***/ "./resources/js/components/presontational/SocialBtn.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/presontational/SocialBtn.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var SocialBtn = function SocialBtn(props) {
+  var highlight = props.highlight || false;
+  var btnType = 'dark';
+
+  if (highlight) {
+    btnType = 'success';
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col",
+    onClick: props.onClick
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: 'fa fa-' + props.icon
+  }), props.text);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (SocialBtn);
 
 /***/ }),
 

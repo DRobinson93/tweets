@@ -11,7 +11,7 @@ exports[`Empty tweet gives an alert error 1`] = `
       className="sr-only"
       htmlFor="inlineFormInput"
     >
-      Name
+      New Tweet
     </label>
     <textarea
       className="form-control mb-2 col-11"
@@ -41,7 +41,7 @@ exports[`Empty tweet gives an alert error 2`] = `
       className="sr-only"
       htmlFor="inlineFormInput"
     >
-      Name
+      New Tweet
     </label>
     <textarea
       className="form-control mb-2 col-11"

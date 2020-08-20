@@ -25,7 +25,6 @@ class CreatePost extends React.Component {
         })
             .then(response => {
                 this.props.addToParentPostArr(response.data);
-                console.log(response.data);
                 this.setState({
                     alert: {text:'Tweet added', type:'success'},
                     value : ''
@@ -41,7 +40,7 @@ class CreatePost extends React.Component {
         return (
             <div className="form-inline align-items-center">
                 <div className="form-row col-12">
-                    <label className="sr-only" htmlFor="inlineFormInput">Name</label>
+                    <label className="sr-only" htmlFor="inlineFormInput">New Tweet</label>
                     <textarea onChange={this.handleChange} className="form-control mb-2 col-11" id="inlineFormInput" placeholder="What's going on?"/>
                     <button onClick={this.handleSubmit} type="button" className="btn btn-primary mb-2 rounded col-1">Tweet</button>
                 </div>
