@@ -7,9 +7,9 @@ function Posts(props) {
             {props.posts.map((post, i) => {
                 // Return the element. Also pass key
                 return (
-                    <div className="card my-2 w-100">
+                    <div key={i} className="card my-2 w-100">
                         <div className="card-body">
-                            <Post key={i} {...post}/>
+                            <Post {...post}/>
                         </div>
                     </div>
                 )

@@ -20,11 +20,6 @@ class CreatePostLikesTable extends Migration
             $table->unique(['user_id', 'post_id']);
             $table->timestamps();
         });
-
-        Schema::table('post_likes', function($table) {
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('user_id')->references('id')->on('users');
-        });
     }
 
     /**

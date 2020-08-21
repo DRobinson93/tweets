@@ -20,11 +20,6 @@ class CreateCommentLikesTable extends Migration
             $table->unique(['user_id', 'comment_id']);
             $table->timestamps();
         });
-
-        Schema::table('comment_likes', function($table) {
-            $table->foreign('comment_id')->references('id')->on('comments');
-            $table->foreign('user_id')->references('id')->on('users');
-        });
     }
 
     /**

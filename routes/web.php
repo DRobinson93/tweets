@@ -23,3 +23,7 @@ Route::resource('postLikes', 'PostLikeController',  ['only' => ['destroy']]);
 Route::post('postLikes/{post}', 'PostLikeController@store');
 Route::resource('commentLikes', 'CommentLikeController',  ['only' => ['destroy']]);
 Route::post('commentLikes/{post}', 'CommentLikeController@store');
+
+Route::resource('comments', 'CommentController',  ['only' => ['destroy']]);
+Route::post('comments/{post}', 'CommentController@store');
+Route::get('comments/{post}', 'CommentController@show');

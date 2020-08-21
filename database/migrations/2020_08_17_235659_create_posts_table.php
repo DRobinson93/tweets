@@ -19,10 +19,6 @@ class CreatePostsTable extends Migration
             $table->text('value');
             $table->timestamps();
         });
-
-        Schema::table('posts', function($table) {
-            $table->foreign('user_id')->references('id')->on('users');
-        });
     }
 
     /**

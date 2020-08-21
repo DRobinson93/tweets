@@ -64,7 +64,7 @@ class PostController extends Controller
     {
         return response(
             Post::with('user')
-            ->withCount('likes')
+            ->withCount('likes', 'comments')
             ->orderBy("created_at", 'desc')->get()->toJson()
         );
     }
