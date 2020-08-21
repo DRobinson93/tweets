@@ -7,9 +7,11 @@ const SocialBtn = (props) => {
         btnType = 'success';
     }
     return (
-        <div className="col" onClick={props.onClick}>
-            <i className={'fa fa-'+props.icon}></i>
-            {props.text}
+        <div className={'col text-' + btnType} onClick={props.onClick}>
+            <div className="cursor-pointer">
+                <i className={'fa fa-'+props.icon}></i>
+                {props.text}
+            </div>
         </div>
     );
 };

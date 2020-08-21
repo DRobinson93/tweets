@@ -69360,16 +69360,63 @@ var Post = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
 
-    _defineProperty(_assertThisInitialized(_this), "handleLike", function () {
+    _defineProperty(_assertThisInitialized(_this), "toggleLiked", function () {
       _this.setState({
-        highlightHeart: true
+        authUserLiked: !_this.state.authUserLiked
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "unlike", function () {
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a["delete"]('/postLikes/' + _this.props.auth_user_like_id).then(function (response) {
+        _this.setState({
+          alert: {
+            text: 'Like removed',
+            type: 'success'
+          },
+          numOfLikes: _this.state.numOfLikes - 1
+        });
+
+        _this.toggleLiked();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "like", function () {
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/postLikes/' + _this.props.id).then(function (response) {
+        _this.setState({
+          alert: {
+            text: 'Like added',
+            type: 'success'
+          },
+          numOfLikes: _this.state.numOfLikes + 1,
+          auth_user_like_id: response.id
+        });
+
+        _this.toggleLiked();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleLikeChange", function () {
+      var liked = _this.state.authUserLiked;
+      var requestsUrl = '/postLikes/' + _this.props.auth_user_like_id;
+
+      if (liked) {
+        //unlike
+        _this.unlike();
+      } else {
+        //like
+        _this.like();
+      }
     });
 
     _this.state = {
       value: '',
       alert: {},
-      highlightHeart: false
+      numOfLikes: props.likes_count,
+      authUserLiked: props.auth_user_like_id !== null
     };
     return _this;
   }
@@ -69402,10 +69449,10 @@ var Post = /*#__PURE__*/function (_React$Component) {
         icon: "comment",
         text: "100"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        onClick: this.handleLike,
-        text: "100",
+        onClick: this.handleLikeChange,
+        text: this.state.numOfLikes,
         icon: "heart",
-        highlight: this.state.highlightHeart
+        highlight: this.state.authUserLiked
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_AlertMessage__WEBPACK_IMPORTED_MODULE_1__["default"], {
         show: "true",
         type: this.state.alert.type,
@@ -69510,11 +69557,13 @@ var SocialBtn = function SocialBtn(props) {
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col",
+    className: 'col text-' + btnType,
     onClick: props.onClick
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "cursor-pointer"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: 'fa fa-' + props.icon
-  }), props.text);
+  }), props.text));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (SocialBtn);

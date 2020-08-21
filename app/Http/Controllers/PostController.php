@@ -62,7 +62,11 @@ class PostController extends Controller
      */
     public function showAll()
     {
-        return response(Post::with('user')->orderBy("created_at", 'desc')->get());
+        return response(
+            Post::with('user')
+            ->withCount('likes')
+            ->orderBy("created_at", 'desc')->get()->toJson()
+        );
     }
 
     /**

@@ -19,3 +19,7 @@ Route::get('/', 'HomeController@index');
 
 Route::get('posts/all', 'PostController@showAll');
 Route::resource('posts', 'PostController');
+Route::resource('postLikes', 'PostLikeController',  ['only' => ['destroy']]);
+Route::post('postLikes/{post}', 'PostLikeController@store');
+Route::resource('commentLikes', 'CommentLikeController',  ['only' => ['destroy']]);
+Route::post('commentLikes/{post}', 'CommentLikeController@store');

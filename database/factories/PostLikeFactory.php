@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Like;
+use App\PostLike;
 use Faker\Generator as Faker;
 
-$factory->define(Like::class, function (Faker $faker) {
+$factory->define(PostLike::class, function (Faker $faker) {
     return [
         //
     ];

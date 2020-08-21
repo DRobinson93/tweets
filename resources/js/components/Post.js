@@ -9,11 +9,49 @@ class Post extends React.Component {
         this.state = {
             value: '',
             alert: {},
-            highlightHeart: false
+            numOfLikes: props.likes_count,
+            authUserLiked: props.auth_user_like_id !== null,
         };
     }
-    handleLike = () =>{
-        this.setState({highlightHeart : true});
+    toggleLiked = () => {
+        this.setState({authUserLiked : !this.state.authUserLiked});
+    }
+    unlike = () => {
+        axios.delete('/postLikes/'+this.props.auth_user_like_id)
+            .then((response) =>{
+                this.setState({
+                    alert: {text:'Like removed', type:'success'},
+                    numOfLikes: this.state.numOfLikes - 1
+                });
+                this.toggleLiked();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    like = () => {
+        axios.post('/postLikes/'+this.props.id)
+            .then( (response) => {
+                this.setState({
+                    alert: {text:'Like added', type:'success'},
+                    numOfLikes: this.state.numOfLikes + 1,
+                    auth_user_like_id: response.id
+                });
+                this.toggleLiked();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    handleLikeChange = () =>{
+        const liked = this.state.authUserLiked;
+        const requestsUrl = '/postLikes/'+this.props.auth_user_like_id;
+        if(liked){ //unlike
+            this.unlike();
+        }
+        else{ //like
+            this.like();
+        }
     };
     render() {
         return (
@@ -36,8 +74,8 @@ class Post extends React.Component {
                 <div className="row w-100">
                     <SocialBtn icon="retweet" text="100"/>
                     <SocialBtn icon="comment" text="100"/>
-                    <SocialBtn onClick={this.handleLike} text="100"
-                               icon="heart" highlight={this.state.highlightHeart}/>
+                    <SocialBtn onClick={this.handleLikeChange} text={this.state.numOfLikes}
+                               icon="heart" highlight={this.state.authUserLiked}/>
                 </div>
                 <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
             </div>
