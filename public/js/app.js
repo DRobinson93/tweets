@@ -69230,7 +69230,8 @@ var Post = /*#__PURE__*/function (_React$Component) {
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/comments/' + _this.props.postId, {
         value: _this.state.newComment
       }).then(function (response) {
-        //this.props.setParentNumberOfComments(this.state.comments.length);
+        _this.props.setParentNumberOfComments(_this.state.comments.length);
+
         _this.setState({
           alert: {
             text: 'Comment added',
@@ -69276,6 +69277,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
         htmlFor: "addComment"
       }, "Add a comment"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: this.handleChange,
+        value: this.state.newComment,
         className: "form-control mb-2 col-11",
         id: "addComment",
         placeholder: "Add A Comment"
@@ -69623,8 +69625,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "setNumOfComments", function (numOf) {
       _this.setState({
-        numOfComments: numOfComments,
-        numOf: numOf
+        numOfComments: numOf
       });
     });
 
@@ -69710,7 +69711,13 @@ var Post = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row w-100"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-6"
+        className: "col-1"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.props.user.avatar_url,
+        alt: "avatar",
+        className: "img-thumbnail"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-5"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
         className: "m-0"
       }, this.props.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "@", this.props.user.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69728,7 +69735,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
         text: "100"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
         icon: "comment",
-        text: "100",
+        text: this.state.numOfComments,
         onClick: this.toggleShowComments
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_presontational_SocialBtn__WEBPACK_IMPORTED_MODULE_2__["default"], {
         onClick: this.handleLikeChange,

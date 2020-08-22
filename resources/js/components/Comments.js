@@ -41,7 +41,7 @@ class Post extends React.Component {
             value: this.state.newComment
         })
             .then(response => {
-                //this.props.setParentNumberOfComments(this.state.comments.length);
+                this.props.setParentNumberOfComments(this.state.comments.length);
                 this.setState({
                     alert: {text:'Comment added', type:'success'},
                     newComment : '',
@@ -62,7 +62,7 @@ class Post extends React.Component {
                 })}
                 <div className="form-row col-12">
                     <label className="sr-only" htmlFor="addComment">Add a comment</label>
-                    <input onChange={this.handleChange} className="form-control mb-2 col-11" id="addComment" placeholder="Add A Comment"/>
+                    <input onChange={this.handleChange} value={this.state.newComment} className="form-control mb-2 col-11" id="addComment" placeholder="Add A Comment"/>
                     <button onClick={this.handleSubmit} type="button" className="btn btn-outline-primary mb-2 rounded col-1">Comment</button>
                 </div>
                 <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>

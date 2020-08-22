@@ -20,7 +20,7 @@ class Post extends React.Component {
         this.setState({authUserLiked : !this.state.authUserLiked});
     }
     setNumOfComments = (numOf) => {
-        this.setState({numOfComments, numOf})
+        this.setState({numOfComments: numOf})
     }
     unlike = () => {
         axios.delete('/postLikes/'+this.props.auth_user_like_id)
@@ -72,7 +72,10 @@ class Post extends React.Component {
         return (
             <div className="form-inline align-items-center">
                 <div className="row w-100">
-                    <div className="col-6">
+                    <div className="col-1">
+                        <img src={this.props.user.avatar_url} alt="avatar" className="img-thumbnail"/>
+                    </div>
+                     <div className="col-5">
                         <h5 className="m-0">{this.props.user.name}</h5>
                         <small>@{this.props.user.name}</small>
                     </div>
@@ -88,7 +91,7 @@ class Post extends React.Component {
                 </div>
                 <div className="row w-100">
                     <SocialBtn icon="retweet" text="100"/>
-                    <SocialBtn icon="comment" text="100" onClick={this.toggleShowComments}/>
+                    <SocialBtn icon="comment" text={this.state.numOfComments} onClick={this.toggleShowComments}/>
                     <SocialBtn onClick={this.handleLikeChange} text={this.state.numOfLikes}
                                icon="heart" highlight={this.state.authUserLiked}/>
                 </div>
