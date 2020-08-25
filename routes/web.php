@@ -27,3 +27,7 @@ Route::post('commentLikes/{post}', 'CommentLikeController@store');
 Route::resource('comments', 'CommentController',  ['only' => ['destroy']]);
 Route::post('comments/{post}', 'CommentController@store');
 Route::get('comments/{post}', 'CommentController@show');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
