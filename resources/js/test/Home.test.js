@@ -2,12 +2,12 @@ import React from 'react';
 import Home from '../components/Home';
 import { render, queryByTestId, getByText } from "@testing-library/react";
 import axios from 'axios';
-import {postsData, postData, secondPostData} from './common/mockData.js';
+import {postsData, postData, newPostData} from './common/mockData.js';
 import {waitFor} from '@testing-library/dom'
 import {expect} from "@jest/globals";
 import {testIds} from "./common/testHelpers";
 import ReactTestUtils from 'react-dom/test-utils';
-import {messages} from "../common";
+import {messages, getSocialBtnTestId, getSocialBtnParseInt} from "../common";
 
 let globalContainer = null;
 beforeEach(async () => {
@@ -42,7 +42,7 @@ function getAddTweetAlertDiv(){
     return queryByTestId(globalContainer, testIds.tweetFormError);
 }
 
-test('function to add to post arr from child CreatePost component works', async () => {
+test('creating a new post works, is front end validated, and populates in the dom correct', async () => {
     const textarea = queryByTestId(globalContainer, testIds.addNewTweet.input);
     const submitBtn = queryByTestId(globalContainer, testIds.addNewTweet.btn);
 
@@ -58,17 +58,28 @@ test('function to add to post arr from child CreatePost component works', async 
     );
 
     //set value of input and submit form
-    textarea.value = secondPostData.value;
+    textarea.value = newPostData.value;
     ReactTestUtils.Simulate.change(textarea);
     //clicking submit calls a post call so fake the return data
     await axios.post.mockResolvedValueOnce({
-        data: secondPostData
+        data: newPostData
     });
     submitBtn.click();
     await waitFor(() => {
-        expect(getByText(globalContainer, secondPostData.value)).toBeTruthy();
+        expect(getByText(globalContainer, newPostData.value)).toBeTruthy();
         //now make sure the error is gone, and success shows
         expect(getAddTweetAlertDiv().innerHTML).toBe(messages.newTweetForm.success);
         }
     )
+
+    //make sure post starts with no comments or likes or re posts
+    for (const type of ['comment', 'retweet', 'like']) {
+        const btn = getSocialBtnByTestId(newPostData.id, type);
+        expect(getSocialBtnParseInt(btn)).toBe(0);
+    }
 });
+
+function getSocialBtnByTestId(id, type){
+    const testId = getSocialBtnTestId(id, type);
+    return queryByTestId(globalContainer, testId);
+}

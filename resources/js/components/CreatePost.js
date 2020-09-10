@@ -42,7 +42,7 @@ class CreatePost extends React.Component {
         return (
             <div className="form-inline align-items-center">
                 <div className="form-row col-12">
-                    <label className="sr-only">New Tweet
+                    <label className="col">
                         <textarea onChange={this.handleChange} className="form-control mb-2 col-11"
                                   data-testid={testIds.addNewTweet.input} placeholder="What's going on?"/>
                     </label>

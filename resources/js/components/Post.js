@@ -12,6 +12,7 @@ class Post extends React.Component {
             alert: {},
             numOfLikes: props.likes_count,
             numOfComments: props.comments_count,
+            numOfRetweets: props.retweets_count,
             authUserLiked: props.auth_user_like_id !== null,
             showCommentsDiv: false
         };
@@ -90,9 +91,10 @@ class Post extends React.Component {
                     </div>
                 </div>
                 <div className="row w-100">
-                    <SocialBtn icon="retweet" text="100"/>
+                    <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
                     <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment" text={this.state.numOfComments} onClick={this.toggleShowComments}/>
-                    <SocialBtn onClick={this.handleLikeChange} text={this.state.numOfLikes}
+                    <SocialBtn testId={"post"+this.props.id+"likebtn"}
+                               onClick={this.handleLikeChange} text={this.state.numOfLikes}
                                icon="heart" highlight={this.state.authUserLiked}/>
                 </div>
                 <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
@@ -101,5 +103,10 @@ class Post extends React.Component {
         );
     }
 }
+
+// Specifies the default values for props:
+Post.defaultProps = {
+    comments_count: 0, likes_count:0, retweets_count:0
+};
 
 export default Post;

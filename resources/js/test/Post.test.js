@@ -6,6 +6,7 @@ import { unmountComponentAtNode , render} from "react-dom";
 import { act } from "react-dom/test-utils";
 import axios from "axios";
 import {waitFor} from "@testing-library/dom";
+import {getSocialBtnByTestId, getSocialBtnParseInt} from './../common'
 
 let container = null;
 let commentBtn = null;
@@ -16,7 +17,7 @@ beforeEach(() => {
     act(() => {
         render(<Post {...postData} />, container);
     });
-    commentBtn = getSocialBtnByTestId(container, postData.id);
+    commentBtn = getSocialBtnByTestId(document, postData.id, 'comment');
 });
 
 afterEach(() => {
@@ -31,7 +32,7 @@ test('correct data shows on load', () => {
     expect(container.textContent).toContain(postData.value);
 
     //check the number of comments show correct
-    const numOfCommentsInDom = parseInt(commentBtn.querySelector('[data-testclass="text"]').innerHTML);
+    const numOfCommentsInDom = getSocialBtnParseInt(commentBtn);
     expect(numOfCommentsInDom).toBe(postData.comments_count);
 });
 
@@ -54,7 +55,3 @@ test('comments show only after click', async () => {
     )
 
 });
-
-function getSocialBtnByTestId(dom, id){
-    return document.querySelector("[data-testid=post"+id+"commentbtn]");
-}
