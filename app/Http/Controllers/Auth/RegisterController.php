@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\AvatarUploaded;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use \Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Image;
 
 class RegisterController extends Controller
 {
@@ -55,31 +56,33 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'jah' => ['required']
+            'avatar' => ['image', 'required','nullable']
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Array $data)
     {
         $createArr = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'username' => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ];
+        $user = User::create($createArr);
         $request = app('request');
         if($request->hasfile('avatar')){
-            $avatar = $request->file('avatar');
-            $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300, 300)->save( public_path('storage/' . $filename) );
-            $createArr['avatar'] = $filename;
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $path = basename($path);
+            $user->avatar = $path;
+            $user->save();
+            event(new AvatarUploaded($user));
         }
-        return User::create($createArr);
+        return $user;
     }
 }

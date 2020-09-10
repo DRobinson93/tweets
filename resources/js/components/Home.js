@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CreatePost from './CreatePost';
 import Posts from './Presontational/Posts';
+import axios from 'axios';
 
 class Home extends React.Component {
     constructor(props) {
@@ -12,16 +13,12 @@ class Home extends React.Component {
         const posts = [post, ...this.state.posts];
         this.setState({posts: posts});
     };
+    getAndStorePosts = async () =>{
+        let res = await axios.get('/posts/all');
+        this.setState({posts: res.data});
+    };
     componentDidMount() {
-        //get data
-        axios.get('/posts/all')
-            .then(response =>{
-                console.log(response);
-                this.setState({posts: response.data});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        this.getAndStorePosts().then();
     }
     render() {
         return (

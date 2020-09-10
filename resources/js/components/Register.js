@@ -30,7 +30,7 @@ function Register() {
         }
         axios.post('/register', form_data, config)
             .then(function () {
-                window.location = '/';
+               // window.location = '/';
             })
             .catch(function (error) {
                 setGenError(error.response.data.message);

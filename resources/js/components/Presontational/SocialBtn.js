@@ -7,10 +7,10 @@ const SocialBtn = (props) => {
         btnType = 'success';
     }
     return (
-        <div className={'col text-' + btnType} onClick={props.onClick}>
+        <div className={'col text-' + btnType} onClick={props.onClick} data-testid={props.testId}>
             <div className="cursor-pointer">
                 <i className={'fa fa-'+props.icon}></i>
-                {props.text}
+                <span data-testclass="text">{props.text}</span>
             </div>
         </div>
     );

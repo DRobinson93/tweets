@@ -7,7 +7,7 @@ const AlertMessage = props => {
     }
     return (
         <Alert variant={props.type} fade="false" show={true}>
-           {props.text}
+            <span data-testid={props.testId ?? ''}>{props.text}</span>
         </Alert>
     );
 };

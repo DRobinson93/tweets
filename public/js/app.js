@@ -72912,7 +72912,7 @@ function Posts(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-inline align-items-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_flash_message__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    duration: 100000,
+    duration: 1000,
     persistOnHover: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
     className: "alert alert-danger"
@@ -73011,8 +73011,7 @@ function Register() {
         'content-type': 'multipart/form-data'
       }
     };
-    axios.post('/register', form_data, config).then(function () {
-      window.location = '/';
+    axios.post('/register', form_data, config).then(function () {// window.location = '/';
     })["catch"](function (error) {
       setGenError(error.response.data.message);
     });

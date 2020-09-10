@@ -91,7 +91,7 @@ class Post extends React.Component {
                 </div>
                 <div className="row w-100">
                     <SocialBtn icon="retweet" text="100"/>
-                    <SocialBtn icon="comment" text={this.state.numOfComments} onClick={this.toggleShowComments}/>
+                    <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment" text={this.state.numOfComments} onClick={this.toggleShowComments}/>
                     <SocialBtn onClick={this.handleLikeChange} text={this.state.numOfLikes}
                                icon="heart" highlight={this.state.authUserLiked}/>
                 </div>

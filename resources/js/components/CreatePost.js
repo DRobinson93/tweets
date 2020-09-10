@@ -1,6 +1,8 @@
 import React from 'react';
 import AlertMessage from './presontational/AlertMessage';
 import axios from 'axios';
+import {testIds} from "./../test/common/testHelpers";
+import {messages} from "./../common";
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -17,7 +19,7 @@ class CreatePost extends React.Component {
         this.setState({alert: {}});
         if(this.state.value === ""){
             return this.setState({
-                alert: {text:'Tweet can not be blank', type:'info'}
+                alert: {text:messages.newTweetForm.blank, type:'info'}
             });
         }
         axios.post('/posts', {
@@ -26,7 +28,7 @@ class CreatePost extends React.Component {
             .then(response => {
                 this.props.addToParentPostArr(response.data);
                 this.setState({
-                    alert: {text:'Tweet added', type:'success'},
+                    alert: {text:messages.newTweetForm.success, type:'success'},
                     value : ''
                 });
             })
@@ -40,11 +42,14 @@ class CreatePost extends React.Component {
         return (
             <div className="form-inline align-items-center">
                 <div className="form-row col-12">
-                    <label className="sr-only" htmlFor="inlineFormInput">New Tweet</label>
-                    <textarea onChange={this.handleChange} className="form-control mb-2 col-11" id="inlineFormInput" placeholder="What's going on?"/>
-                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary mb-2 rounded col-1">Tweet</button>
+                    <label className="sr-only">New Tweet
+                        <textarea onChange={this.handleChange} className="form-control mb-2 col-11"
+                                  data-testid={testIds.addNewTweet.input} placeholder="What's going on?"/>
+                    </label>
+                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary mb-2 rounded col-1"
+                            data-testid={testIds.addNewTweet.btn}>Tweet</button>
                 </div>
-                <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
+                <AlertMessage testId={testIds.tweetFormError} show="true" type={this.state.alert.type} text={this.state.alert.text}/>
             </div>
         );
     }
