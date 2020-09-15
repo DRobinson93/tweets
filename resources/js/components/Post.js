@@ -1,6 +1,7 @@
 import React from 'react';
 import AlertMessage from './presontational/AlertMessage';
 import SocialBtn from './presontational/SocialBtn';
+import UserInfo from './Presontational/UserInfo';
 import Comments from './Comments';
 import axios from 'axios';
 
@@ -17,6 +18,7 @@ class Post extends React.Component {
             showCommentsDiv: false
         };
     }
+
     toggleLiked = () => {
         this.setState({authUserLiked : !this.state.authUserLiked});
     }
@@ -71,34 +73,30 @@ class Post extends React.Component {
             commentsDiv = "";
         }
         return (
-            <div className="form-inline align-items-center">
-                <div className="row w-100">
-                    <div className="col-1">
-                        <img src={this.props.user.avatar_url} alt="avatar" className="img-thumbnail"/>
-                    </div>
-                     <div className="col-5">
-                        <h5 className="m-0">{this.props.user.name}</h5>
-                        <small>@{this.props.user.name}</small>
-                    </div>
-                    <div className="col-6">
-                        <button className="btn btn-outline-primary rounded float-right">Follow</button>
-                    </div>
-                    <div className="col-12 mt-3 mb-1">
+            <div className="row no-gutters">
+                <div className="col-2 col-md-1 px-2">
+                    <img src={this.props.user.avatar_public_url} alt="avatar"
+                         className="img-thumbnail rounded-circle float-right mr-2"/>
+                </div>
+                <div className="col-10 col-md-11">
+                    <h5 className="m-0">
+                        <UserInfo user={this.props.user}/>
+                    </h5>
+                    <div className="my-1">
                         {this.props.value}
                     </div>
-                    <div className="col-12">
-                        {this.props.created_at}
+                    <div className="row no-gutters w-100">
+                        <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
+                        <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment"
+                                   className="text-center"
+                                   text={this.state.numOfComments} onClick={this.toggleShowComments}/>
+                        <SocialBtn testId={"post"+this.props.id+"likebtn"} className="pull-right"
+                                   onClick={this.handleLikeChange} text={this.state.numOfLikes}
+                                   icon="heart" highlight={this.state.authUserLiked}/>
                     </div>
+                    <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
+                    {commentsDiv}
                 </div>
-                <div className="row w-100">
-                    <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
-                    <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment" text={this.state.numOfComments} onClick={this.toggleShowComments}/>
-                    <SocialBtn testId={"post"+this.props.id+"likebtn"}
-                               onClick={this.handleLikeChange} text={this.state.numOfLikes}
-                               icon="heart" highlight={this.state.authUserLiked}/>
-                </div>
-                <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
-                {commentsDiv}
             </div>
         );
     }

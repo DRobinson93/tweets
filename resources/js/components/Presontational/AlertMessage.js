@@ -9,6 +9,7 @@ const AlertMessage = props => {
         <Alert variant={props.type} fade="false" show={true}>
             <span data-testid={props.testId ?? ''}>{props.text}</span>
         </Alert>
+
     );
 };
 export default AlertMessage;

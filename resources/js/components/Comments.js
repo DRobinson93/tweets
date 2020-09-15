@@ -2,6 +2,8 @@ import React from 'react';
 import AlertMessage from './presontational/AlertMessage';
 import Comment from './Comment';
 import axios from 'axios';
+import InlineTxtAreaAndSubmitBtn from "./Presontational/InlineTxtAreaAndSubmitBtn";
+import {getCommentsTestIds} from "../common";
 
 class Post extends React.Component {
     constructor(props) {
@@ -12,6 +14,7 @@ class Post extends React.Component {
             newComment: ""
         };
         this.getComments();
+        this.testIds = getCommentsTestIds(props.postId)
     }
     toggleLiked = () => {
         this.setState({authUserLiked : !this.state.authUserLiked});
@@ -27,18 +30,15 @@ class Post extends React.Component {
                 console.log(error);
             });
     }
-    handleChange = (event) => {
-        this.setState({newComment: event.target.value});
-    };
-    handleSubmit = () => {
-        this.setState({alert: {}});
-        if(this.state.newComment === ""){
+    handleSubmit = (textAreaVal) => {
+        this.setState({alert: {}, newComment: textAreaVal});
+        if(textAreaVal === ""){
             return this.setState({
                 alert: {text:'Comment can not be blank', type:'info'}
             });
         }
         axios.post('/comments/'+this.props.postId, {
-            value: this.state.newComment
+            value: textAreaVal
         })
             .then(response => {
                 this.props.setParentNumberOfComments(this.state.comments.length);
@@ -56,15 +56,12 @@ class Post extends React.Component {
     };
     render() {
         return (
-            <div className="card-body">
+            <div>
                 {this.state.comments.map((comment, i) => {
                     return (<Comment key={i} {...comment} />)
                 })}
-                <div className="form-row col-12">
-                    <label className="sr-only" htmlFor="addComment">Add a comment</label>
-                    <input onChange={this.handleChange} value={this.state.newComment} className="form-control mb-2 col-11" id="addComment" placeholder="Add A Comment"/>
-                    <button onClick={this.handleSubmit} type="button" className="btn btn-outline-primary mb-2 rounded col-1">Comment</button>
-                </div>
+                <InlineTxtAreaAndSubmitBtn btnTxt="Comment" testIds={this.testIds} placeholder="Add a comment"
+                                           handleSubmit={this.handleSubmit} value={this.state.newComment} />
                 <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
             </div>
         );

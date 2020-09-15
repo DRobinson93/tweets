@@ -8,7 +8,7 @@ export const postData = {
             "email_verified_at":null,"created_at":null,
             "updated_at":null,"avatar":"user.jpg",
             "username":"",
-            "avatar_url":"http://tweets.test/user.jpg"
+            "avatar_public_url":"http://tweets.test/user.jpg"
         }
 };
 
@@ -22,7 +22,7 @@ export const newPostData = {
             "id":1,"name":"Admin User","email":"danpaulrob1@gmail.com",
             "email_verified_at":null,"created_at":null,"updated_at":null,
             "avatar":"user.jpg","username":"",
-            "avatar_url":"http:\/\/tweets.test\/user.jpg"
+            "avatar_public_url":"http:\/\/tweets.test\/user.jpg"
         }
 };
 
@@ -35,3 +35,10 @@ export const commentData = [
         "updated_at":"2020-09-09T00:15:45.000000Z"
     }
 ];
+
+export const newCommentData =
+    {
+        "id":2,"value":"new comment test","user_id":1,
+        "post_id":1,"created_at":"2020-09-09T00:15:45.000000Z",
+        "updated_at":"2020-09-09T00:15:45.000000Z"
+    }

@@ -39,7 +39,7 @@ test('posts load', async () => {
 });
 
 function getAddTweetAlertDiv(){
-    return queryByTestId(globalContainer, testIds.tweetFormError);
+    return queryByTestId(globalContainer, testIds.tweetFormAlert);
 }
 
 test('creating a new post works, is front end validated, and populates in the dom correct', async () => {
@@ -66,6 +66,9 @@ test('creating a new post works, is front end validated, and populates in the do
     });
     submitBtn.click();
     await waitFor(() => {
+        //the input value should clear
+        expect(queryByTestId(globalContainer, testIds.addNewTweet.input).innerHTML).toBe('');
+        //now the value should appear in the dom
         expect(getByText(globalContainer, newPostData.value)).toBeTruthy();
         //now make sure the error is gone, and success shows
         expect(getAddTweetAlertDiv().innerHTML).toBe(messages.newTweetForm.success);

@@ -1,6 +1,6 @@
 import React from 'react';
-import AlertMessage from './presontational/AlertMessage';
-import axios from 'axios';
+import TweetsCard from "./Presontational/TweetsCard";
+import UserInfo from "./Presontational/UserInfo";
 
 class Post extends React.Component {
     constructor(props) {
@@ -16,10 +16,11 @@ class Post extends React.Component {
     }
     render() {
         return (
-            <div className="card-body">
+            <TweetsCard>
+                <UserInfo user={this.props.user}/>
+                <br/>
                 {this.props.value}
-                <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
-            </div>
+            </TweetsCard>
         );
     }
 }

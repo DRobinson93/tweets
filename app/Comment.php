@@ -15,8 +15,15 @@ class Comment extends Model
         'value', 'user_id', 'post_id',
     ];
 
+    protected $appends = ['user'];
+
     public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
+    }
+
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,8 +34,12 @@ class Post extends Model
         return $like->id ?? null;
     }
 
+    public function getCreatedAtAttribute($dateStr){
+        $date = Carbon::parse($dateStr);
+        return $date->diffForHumans(null, true, true);
+    }
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:00',
+    protected $dates = [
+        'created_at'
     ];
 }

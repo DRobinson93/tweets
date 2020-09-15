@@ -8,7 +8,7 @@ const SocialBtn = (props) => {
     }
     return (
         <div className={'col text-' + btnType} onClick={props.onClick} data-testid={props.testId}>
-            <div className="cursor-pointer">
+            <div className={props.className + " cursor-pointer"}>
                 <i className={'fa fa-'+props.icon}></i>
                 <span data-testclass="text">{props.text}</span>
             </div>
@@ -16,4 +16,9 @@ const SocialBtn = (props) => {
     );
 };
 
+SocialBtn.defaultProps = {
+    className: ''
+};
+
 export default SocialBtn;
+

@@ -3,6 +3,7 @@ import AlertMessage from './presontational/AlertMessage';
 import axios from 'axios';
 import {testIds} from "./../test/common/testHelpers";
 import {messages} from "./../common";
+import InlineTxtAreaAndSubmitBtn from "./Presontational/InlineTxtAreaAndSubmitBtn";
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -12,18 +13,16 @@ class CreatePost extends React.Component {
             alert: {}
         };
     }
-    handleChange = (event) => {
-        this.setState({value: event.target.value});
-    };
-    handleSubmit = () => {
-        this.setState({alert: {}});
-        if(this.state.value === ""){
+    handleSubmit = (txtAreaVal) => {
+        console.log(txtAreaVal);
+        this.setState({alert: {}, value:txtAreaVal});
+        if(txtAreaVal === ""){
             return this.setState({
                 alert: {text:messages.newTweetForm.blank, type:'info'}
             });
         }
         axios.post('/posts', {
-            value: this.state.value
+            value: txtAreaVal
         })
             .then(response => {
                 this.props.addToParentPostArr(response.data);
@@ -40,16 +39,10 @@ class CreatePost extends React.Component {
     };
     render() {
         return (
-            <div className="form-inline align-items-center">
-                <div className="form-row col-12">
-                    <label className="col">
-                        <textarea onChange={this.handleChange} className="form-control mb-2 col-11"
-                                  data-testid={testIds.addNewTweet.input} placeholder="What's going on?"/>
-                    </label>
-                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary mb-2 rounded col-1"
-                            data-testid={testIds.addNewTweet.btn}>Tweet</button>
-                </div>
-                <AlertMessage testId={testIds.tweetFormError} show="true" type={this.state.alert.type} text={this.state.alert.text}/>
+            <div>
+                <InlineTxtAreaAndSubmitBtn btnTxt="Tweet" testIds={testIds.addNewTweet} placeholder="What's going on?"
+                                           handleSubmit={this.handleSubmit} value={this.state.value} />
+                <AlertMessage testId={testIds.tweetFormAlert} show="true" type={this.state.alert.type} text={this.state.alert.text}/>
             </div>
         );
     }

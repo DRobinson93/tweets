@@ -1,5 +1,6 @@
 import React from 'react';
 import Post from '../Post';
+import TweetsCard from "./TweetsCard";
 
 function Posts(props) {
     return (
@@ -7,11 +8,9 @@ function Posts(props) {
             {props.posts.map((post) => {
                 // Return the element. Also pass key
                 return (
-                    <div data-testid={"post"+post['id']} key={post['id']} className="card my-2 w-100">
-                        <div className="card-body">
-                            <Post {...post}/>
-                        </div>
-                    </div>
+                    <TweetsCard testId={"post"+post['id']} key={post['id']}>
+                        <Post {...post}/>
+                    </TweetsCard>
                 )
             })}
         </div>

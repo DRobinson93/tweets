@@ -1,12 +1,14 @@
 import React from 'react';
 import Post from '../components/Post';
 import {postData, commentData} from './common/mockData.js';
+import { queryByTestId } from "@testing-library/react";
 import {expect} from "@jest/globals";
 import { unmountComponentAtNode , render} from "react-dom";
 import { act } from "react-dom/test-utils";
 import axios from "axios";
 import {waitFor} from "@testing-library/dom";
 import {getSocialBtnByTestId, getSocialBtnParseInt} from './../common'
+import {clickBtn} from "../common";
 
 let container = null;
 let commentBtn = null;
@@ -36,22 +38,27 @@ test('correct data shows on load', () => {
     expect(numOfCommentsInDom).toBe(postData.comments_count);
 });
 
-test('comments show only after click', async () => {
+test('comments show after click, hide on second click', async () => {
     //make sure comment does not show on load
     const firstComment = commentData[0].value;
-    expect(container.textContent).not.toContain(firstComment)
+    expect(container.textContent).not.toContain(firstComment);
 
     //clicking comments calls a post call so fake the return data:
     await axios.get.mockResolvedValueOnce({
         data: commentData
     });
 
-    act(() => {
-        commentBtn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
+    clickBtn(commentBtn);
 
     await waitFor(() =>
         expect(container.textContent).toContain(firstComment)
+    )
+
+    //click again to hide div
+    clickBtn(commentBtn);
+
+    await waitFor(() =>
+        expect(container.textContent).not.toContain(firstComment)
     )
 
 });

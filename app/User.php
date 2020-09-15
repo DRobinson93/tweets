@@ -10,7 +10,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $appends = ['avatar_url'];
+    public $timestamps = true;
+
+    protected $appends = ['avatar_public_url', 'first_name'];
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'avatar'
+        'name', 'email', 'password', 'username', 'avatar', 'created_at'
     ];
 
     /**
@@ -49,8 +51,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
-    public function getAvatarUrlAttribute()
+    public function getAvatarPublicUrlAttribute()
     {
-        return url($this->avatar);
+        return url('avatars/'.$this->avatar);
+    }
+
+    public function getFirstNameAttribute()
+    {
+        $parts = explode(" ", $this->attributes['name']);
+        return $parts[0];
     }
 }
