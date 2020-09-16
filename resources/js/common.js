@@ -39,3 +39,8 @@ export function clickBtn(btn){
         btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 }
+
+export function addToPostArr(post){
+    const posts = [post, ...this.state.posts];
+    this.setState({posts: posts});
+}

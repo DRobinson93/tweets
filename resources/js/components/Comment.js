@@ -1,8 +1,9 @@
 import React from 'react';
 import TweetsCard from "./Presontational/TweetsCard";
 import UserInfo from "./Presontational/UserInfo";
+import ImgAndContent from "./Presontational/ImgAndContent";
 
-class Post extends React.Component {
+class Comment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,12 +18,14 @@ class Post extends React.Component {
     render() {
         return (
             <TweetsCard>
-                <UserInfo user={this.props.user}/>
-                <br/>
-                {this.props.value}
+                <ImgAndContent imgUrl={this.props.user.avatar_public_url}>
+                    <UserInfo date={this.props.created_at} user={this.props.user}/>
+                    <br/>
+                    {this.props.value}
+                </ImgAndContent>
             </TweetsCard>
         );
     }
 }
 
-export default Post;
+export default Comment;

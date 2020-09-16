@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,6 +52,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
+    public function following()
+    {
+        return $this->hasMany('App\Follower', 'follower_user_id');
+    }
+
+    public function followers()
+    {
+        return $this->hasMany('App\Follower');
+    }
+
     public function getAvatarPublicUrlAttribute()
     {
         return url('avatars/'.$this->avatar);
@@ -60,5 +71,10 @@ class User extends Authenticatable
     {
         $parts = explode(" ", $this->attributes['name']);
         return $parts[0];
+    }
+
+    public function getCreatedAtAttribute($dateStr){
+        $date = Carbon::parse($dateStr);
+        return $date->diffForHumans(null, true, true);
     }
 }

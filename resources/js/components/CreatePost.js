@@ -14,7 +14,6 @@ class CreatePost extends React.Component {
         };
     }
     handleSubmit = (txtAreaVal) => {
-        console.log(txtAreaVal);
         this.setState({alert: {}, value:txtAreaVal});
         if(txtAreaVal === ""){
             return this.setState({

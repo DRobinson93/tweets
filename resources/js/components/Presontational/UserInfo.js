@@ -5,11 +5,14 @@ const UserInfo = (props) => {
         <span>
             {props.user.first_name}
             <span className="text-muted pl-1">
-                @{props.user.name}
+                <button type="button" className="btn btn-link p-0"
+                        onClick={() => {window.location = '/users/'+props.user.username}}>
+                     @{props.user.username}
+                </button>
                 <span className="tiny">
                     <i className="fa fa-align-center mx-2"/>
                 </span>
-                {props.created_at}
+                {props.date}
             </span>
         </span>
     );

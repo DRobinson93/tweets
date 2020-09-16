@@ -1,37 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CreatePost from './CreatePost';
-import Posts from './Presontational/Posts';
-import axios from 'axios';
-
-class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {posts: []};
-    }
-    addToPostArr = (post) =>{
-        const posts = [post, ...this.state.posts];
-        this.setState({posts: posts});
-    };
-    getAndStorePosts = async () =>{
-        let res = await axios.get('/posts/all');
-        this.setState({posts: res.data});
-    };
-    componentDidMount() {
-        this.getAndStorePosts().then();
-    }
-    render() {
-        return (
-            <div className="container">
-                <CreatePost addToParentPostArr={this.addToPostArr}/>
-                <Posts posts={this.state.posts}/>
-            </div>
-        );
-    }
-}
-
-export default Home;
+import UserProfile from "./UserProfile";
+import MainPage from "./MainPage";
 
 if (document.getElementById('Home')) {
-    ReactDOM.render(<Home />, document.getElementById('Home'));
+    ReactDOM.render(<MainPage />, document.getElementById('Home'));
+}
+
+if (document.getElementById('UserProfile') && document.getElementById('UserId')) {
+    const UserId = document.getElementById('UserId').getAttribute('value');
+    const userOnPersonalPage = document.getElementById('userOnPersonalPage').getAttribute('value');
+    ReactDOM.render(<UserProfile id={UserId} userOnPersonalPage={userOnPersonalPage} />, document.getElementById('UserProfile'));
 }

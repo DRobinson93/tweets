@@ -31,3 +31,11 @@ Route::get('comments/{post}', 'CommentController@show');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('users/{username}', 'UserController@index');
+Route::get('users/posts/{user}', 'UserController@show');
+Route::get('users/{user}/stats', 'UserController@showStats');
+
+Route::post('following/{user}', 'FollowerController@store');
+Route::get('following/{user}', 'FollowerController@showFollowing');
+Route::get('followers/{user}', 'FollowerController@showFollowers');

@@ -57,11 +57,11 @@ class Post extends React.Component {
     render() {
         return (
             <div>
+                <InlineTxtAreaAndSubmitBtn btnTxt="Comment" testIds={this.testIds} placeholder="Add a comment"
+                                           handleSubmit={this.handleSubmit} value={this.state.newComment} />
                 {this.state.comments.map((comment, i) => {
                     return (<Comment key={i} {...comment} />)
                 })}
-                <InlineTxtAreaAndSubmitBtn btnTxt="Comment" testIds={this.testIds} placeholder="Add a comment"
-                                           handleSubmit={this.handleSubmit} value={this.state.newComment} />
                 <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
             </div>
         );

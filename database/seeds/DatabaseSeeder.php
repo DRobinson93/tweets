@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
             // give the user a random amount of posts
             $posts = factory(App\Post::class, rand(0,10))->make();
             $user->posts()->saveMany($posts);
+
+            // give the user a random amount of followers
+            $followers = factory(App\Follower::class, rand(0,10))->make();
+            foreach($followers as &$follower){
+                $follower['user_id'] = $user->id;
+                $follower['follower_user_id'] = factory(App\User::class)->create()->id;
+            }
+            $user->followers()->saveMany($followers);
+
             $user->posts()->each(function($post){
                 //foreach post, give it comments ..reqs a user to comment
                 $comments = factory(App\Comment::class, rand(1,10))->make();

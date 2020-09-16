@@ -17,6 +17,7 @@ class CreatePersonalLogin extends Migration
         DB::table('users')->insert([
             'name' => self::NAME,
             'email' => env('ADMIN_EMAIL'),
+            'username' => env('ADMIN_USERNAME'),
             'password' => Hash::make(env('ADMIN_PASS')),
         ]);
     }

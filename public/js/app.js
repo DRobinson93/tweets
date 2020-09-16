@@ -74447,8 +74447,21 @@ exports.getSocialBtnByTestId = getSocialBtnByTestId;
 exports.getSocialBtnParseInt = getSocialBtnParseInt;
 exports.getCommentsTestIds = getCommentsTestIds;
 exports.clickBtn = clickBtn;
+exports.addToPostArr = addToPostArr;
 
 var _testUtils = __webpack_require__(/*! react-dom/test-utils */ "./node_modules/react-dom/test-utils.js");
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var messages = exports.messages = {
   newTweetForm: {
@@ -74495,6 +74508,13 @@ function clickBtn(btn) {
   });
 }
 
+function addToPostArr(post) {
+  var posts = [post].concat(_toConsumableArray(this.state.posts));
+  this.setState({
+    posts: posts
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/js/components/Comment.js":
@@ -74523,6 +74543,10 @@ var _UserInfo = __webpack_require__(/*! ./Presontational/UserInfo */ "./resource
 
 var _UserInfo2 = _interopRequireDefault(_UserInfo);
 
+var _ImgAndContent = __webpack_require__(/*! ./Presontational/ImgAndContent */ "./resources/js/components/Presontational/ImgAndContent.js");
+
+var _ImgAndContent2 = _interopRequireDefault(_ImgAndContent);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -74549,15 +74573,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var Post = /*#__PURE__*/function (_React$Component) {
-  _inherits(Post, _React$Component);
+var Comment = /*#__PURE__*/function (_React$Component) {
+  _inherits(Comment, _React$Component);
 
-  var _super = _createSuper(Post);
+  var _super = _createSuper(Comment);
 
-  function Post(props) {
+  function Comment(props) {
     var _this;
 
-    _classCallCheck(this, Post);
+    _classCallCheck(this, Comment);
 
     _this = _super.call(this, props);
 
@@ -74575,19 +74599,22 @@ var Post = /*#__PURE__*/function (_React$Component) {
     return _this;
   }
 
-  _createClass(Post, [{
+  _createClass(Comment, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react2["default"].createElement(_TweetsCard2["default"], null, /*#__PURE__*/_react2["default"].createElement(_UserInfo2["default"], {
+      return /*#__PURE__*/_react2["default"].createElement(_TweetsCard2["default"], null, /*#__PURE__*/_react2["default"].createElement(_ImgAndContent2["default"], {
+        imgUrl: this.props.user.avatar_public_url
+      }, /*#__PURE__*/_react2["default"].createElement(_UserInfo2["default"], {
+        date: this.props.created_at,
         user: this.props.user
-      }), /*#__PURE__*/_react2["default"].createElement("br", null), this.props.value);
+      }), /*#__PURE__*/_react2["default"].createElement("br", null), this.props.value));
     }
   }]);
 
-  return Post;
+  return Comment;
 }(_react2["default"].Component);
 
-exports["default"] = Post;
+exports["default"] = Comment;
 
 /***/ }),
 
@@ -74736,16 +74763,16 @@ var Post = /*#__PURE__*/function (_React$Component) {
   _createClass(Post, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react2["default"].createElement("div", null, this.state.comments.map(function (comment, i) {
-        return /*#__PURE__*/_react2["default"].createElement(_Comment2["default"], _extends({
-          key: i
-        }, comment));
-      }), /*#__PURE__*/_react2["default"].createElement(_InlineTxtAreaAndSubmitBtn2["default"], {
+      return /*#__PURE__*/_react2["default"].createElement("div", null, /*#__PURE__*/_react2["default"].createElement(_InlineTxtAreaAndSubmitBtn2["default"], {
         btnTxt: "Comment",
         testIds: this.testIds,
         placeholder: "Add a comment",
         handleSubmit: this.handleSubmit,
         value: this.state.newComment
+      }), this.state.comments.map(function (comment, i) {
+        return /*#__PURE__*/_react2["default"].createElement(_Comment2["default"], _extends({
+          key: i
+        }, comment));
       }), /*#__PURE__*/_react2["default"].createElement(_AlertMessage2["default"], {
         show: "true",
         type: this.state.alert.type,
@@ -74834,8 +74861,6 @@ var CreatePost = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
 
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (txtAreaVal) {
-      console.log(txtAreaVal);
-
       _this.setState({
         alert: {},
         value: txtAreaVal
@@ -74914,6 +74939,50 @@ exports["default"] = CreatePost;
 "use strict";
 
 
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _UserProfile = __webpack_require__(/*! ./UserProfile */ "./resources/js/components/UserProfile.js");
+
+var _UserProfile2 = _interopRequireDefault(_UserProfile);
+
+var _MainPage = __webpack_require__(/*! ./MainPage */ "./resources/js/components/MainPage.js");
+
+var _MainPage2 = _interopRequireDefault(_MainPage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+if (document.getElementById('Home')) {
+  _reactDom2["default"].render( /*#__PURE__*/_react2["default"].createElement(_MainPage2["default"], null), document.getElementById('Home'));
+}
+
+if (document.getElementById('UserProfile') && document.getElementById('UserId')) {
+  var UserId = document.getElementById('UserId').getAttribute('value');
+  var userOnPersonalPage = document.getElementById('userOnPersonalPage').getAttribute('value');
+
+  _reactDom2["default"].render( /*#__PURE__*/_react2["default"].createElement(_UserProfile2["default"], {
+    id: UserId,
+    userOnPersonalPage: userOnPersonalPage
+  }), document.getElementById('UserProfile'));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/MainPage.js":
+/*!*********************************************!*\
+  !*** ./resources/js/components/MainPage.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -74925,10 +74994,6 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _CreatePost = __webpack_require__(/*! ./CreatePost */ "./resources/js/components/CreatePost.js");
 
@@ -74942,6 +75007,8 @@ var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _common = __webpack_require__(/*! ../common */ "./resources/js/common.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -74949,18 +75016,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74984,25 +75039,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var Home = /*#__PURE__*/function (_React$Component) {
-  _inherits(Home, _React$Component);
+var MainPage = /*#__PURE__*/function (_React$Component) {
+  _inherits(MainPage, _React$Component);
 
-  var _super = _createSuper(Home);
+  var _super = _createSuper(MainPage);
 
-  function Home(props) {
+  function MainPage(props) {
     var _this;
 
-    _classCallCheck(this, Home);
+    _classCallCheck(this, MainPage);
 
     _this = _super.call(this, props);
-
-    _defineProperty(_assertThisInitialized(_this), "addToPostArr", function (post) {
-      var posts = [post].concat(_toConsumableArray(_this.state.posts));
-
-      _this.setState({
-        posts: posts
-      });
-    });
 
     _defineProperty(_assertThisInitialized(_this), "getAndStorePosts", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator2["default"].mark(function _callee() {
       var res;
@@ -75031,10 +75078,11 @@ var Home = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       posts: []
     };
+    _this.addToPostArr = _common.addToPostArr.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(Home, [{
+  _createClass(MainPage, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getAndStorePosts().then();
@@ -75052,14 +75100,10 @@ var Home = /*#__PURE__*/function (_React$Component) {
     }
   }]);
 
-  return Home;
+  return MainPage;
 }(_react2["default"].Component);
 
-exports["default"] = Home;
-
-if (document.getElementById('Home')) {
-  _reactDom2["default"].render( /*#__PURE__*/_react2["default"].createElement(Home, null), document.getElementById('Home'));
-}
+exports["default"] = MainPage;
 
 /***/ }),
 
@@ -75100,6 +75144,10 @@ var _Comments2 = _interopRequireDefault(_Comments);
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var _axios2 = _interopRequireDefault(_axios);
+
+var _ImgAndContent = __webpack_require__(/*! ./Presontational/ImgAndContent */ "./resources/js/components/Presontational/ImgAndContent.js");
+
+var _ImgAndContent2 = _interopRequireDefault(_ImgAndContent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -75170,10 +75218,6 @@ var Post = /*#__PURE__*/function (_React$Component) {
     _defineProperty(_assertThisInitialized(_this), "like", function () {
       _axios2["default"].post('/postLikes/' + _this.props.id).then(function (response) {
         _this.setState({
-          alert: {
-            text: 'Like added',
-            type: 'success'
-          },
           numOfLikes: _this.state.numOfLikes + 1,
           auth_user_like_id: response.id
         });
@@ -75229,19 +75273,12 @@ var Post = /*#__PURE__*/function (_React$Component) {
         commentsDiv = "";
       }
 
-      return /*#__PURE__*/_react2["default"].createElement("div", {
-        className: "row no-gutters"
-      }, /*#__PURE__*/_react2["default"].createElement("div", {
-        className: "col-2 col-md-1 px-2"
-      }, /*#__PURE__*/_react2["default"].createElement("img", {
-        src: this.props.user.avatar_public_url,
-        alt: "avatar",
-        className: "img-thumbnail rounded-circle float-right mr-2"
-      })), /*#__PURE__*/_react2["default"].createElement("div", {
-        className: "col-10 col-md-11"
+      return /*#__PURE__*/_react2["default"].createElement(_ImgAndContent2["default"], {
+        imgUrl: this.props.user.avatar_public_url
       }, /*#__PURE__*/_react2["default"].createElement("h5", {
         className: "m-0"
       }, /*#__PURE__*/_react2["default"].createElement(_UserInfo2["default"], {
+        date: this.props.created_at,
         user: this.props.user
       })), /*#__PURE__*/_react2["default"].createElement("div", {
         className: "my-1"
@@ -75268,7 +75305,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
         show: "true",
         type: this.state.alert.type,
         text: this.state.alert.text
-      }), commentsDiv));
+      }), commentsDiv);
     }
   }]);
 
@@ -75316,6 +75353,45 @@ function CenterContainer(props) {
 }
 
 exports["default"] = CenterContainer;
+
+/***/ }),
+
+/***/ "./resources/js/components/Presontational/ImgAndContent.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/Presontational/ImgAndContent.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function ImgAndContent(props) {
+  var imgClass = props.imgClass || 'w-100';
+  return /*#__PURE__*/_react2["default"].createElement("div", {
+    className: "row no-gutters"
+  }, /*#__PURE__*/_react2["default"].createElement("div", {
+    className: "col-2 col-md-1 px-2"
+  }, /*#__PURE__*/_react2["default"].createElement("img", {
+    src: props.imgUrl,
+    alt: "avatar",
+    className: 'img-thumbnail rounded-circle float-right mr-2 ' + imgClass
+  })), /*#__PURE__*/_react2["default"].createElement("div", {
+    className: "col-10 col-md-11"
+  }, props.children));
+}
+
+exports["default"] = ImgAndContent;
 
 /***/ }),
 
@@ -75389,6 +75465,64 @@ var InlineTxtAreaAndSubmitBtn = function InlineTxtAreaAndSubmitBtn(props) {
 };
 
 exports["default"] = InlineTxtAreaAndSubmitBtn;
+
+/***/ }),
+
+/***/ "./resources/js/components/Presontational/ListOfUsers.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/Presontational/ListOfUsers.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Post = __webpack_require__(/*! ../Post */ "./resources/js/components/Post.js");
+
+var _Post2 = _interopRequireDefault(_Post);
+
+var _TweetsCard = __webpack_require__(/*! ./TweetsCard */ "./resources/js/components/Presontational/TweetsCard.js");
+
+var _TweetsCard2 = _interopRequireDefault(_TweetsCard);
+
+var _UserInfo = __webpack_require__(/*! ./UserInfo */ "./resources/js/components/Presontational/UserInfo.js");
+
+var _UserInfo2 = _interopRequireDefault(_UserInfo);
+
+var _ImgAndContent = __webpack_require__(/*! ./ImgAndContent */ "./resources/js/components/Presontational/ImgAndContent.js");
+
+var _ImgAndContent2 = _interopRequireDefault(_ImgAndContent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function ListOfUsers(props) {
+  return /*#__PURE__*/_react2["default"].createElement("div", {
+    className: "form-inline align-items-center"
+  }, props.users.map(function (user) {
+    // Return the element. Also pass key
+    return /*#__PURE__*/_react2["default"].createElement(_TweetsCard2["default"], {
+      testId: "user" + user['id'],
+      key: user['id']
+    }, /*#__PURE__*/_react2["default"].createElement(_ImgAndContent2["default"], {
+      imgUrl: user.avatar_public_url,
+      imgClass: "w-50"
+    }, /*#__PURE__*/_react2["default"].createElement(_UserInfo2["default"], {
+      date: user.created_at,
+      user: user
+    })));
+  }));
+}
+
+exports["default"] = ListOfUsers;
 
 /***/ }),
 
@@ -75492,11 +75626,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var UserInfo = function UserInfo(props) {
   return /*#__PURE__*/_react2["default"].createElement("span", null, props.user.first_name, /*#__PURE__*/_react2["default"].createElement("span", {
     className: "text-muted pl-1"
-  }, "@", props.user.name, /*#__PURE__*/_react2["default"].createElement("span", {
+  }, /*#__PURE__*/_react2["default"].createElement("button", {
+    type: "button",
+    className: "btn btn-link p-0",
+    onClick: function onClick() {
+      window.location = '/users/' + props.user.username;
+    }
+  }, "@", props.user.username), /*#__PURE__*/_react2["default"].createElement("span", {
     className: "tiny"
   }, /*#__PURE__*/_react2["default"].createElement("i", {
     className: "fa fa-align-center mx-2"
-  })), props.created_at));
+  })), props.date));
 };
 
 exports["default"] = UserInfo;
@@ -75689,6 +75829,321 @@ exports["default"] = Register;
 if (document.getElementById('register')) {
   _reactDom2["default"].render( /*#__PURE__*/_react2["default"].createElement(Register, null), document.getElementById('register'));
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/UserProfile.js":
+/*!************************************************!*\
+  !*** ./resources/js/components/UserProfile.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _regenerator = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Posts = __webpack_require__(/*! ./Presontational/Posts */ "./resources/js/components/Presontational/Posts.js");
+
+var _Posts2 = _interopRequireDefault(_Posts);
+
+var _ListOfUsers = __webpack_require__(/*! ./Presontational/ListOfUsers */ "./resources/js/components/Presontational/ListOfUsers.js");
+
+var _ListOfUsers2 = _interopRequireDefault(_ListOfUsers);
+
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _CreatePost = __webpack_require__(/*! ./CreatePost */ "./resources/js/components/CreatePost.js");
+
+var _CreatePost2 = _interopRequireDefault(_CreatePost);
+
+var _common = __webpack_require__(/*! ../common */ "./resources/js/common.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var tabStates = ['posts', 'followers', 'following'];
+
+var UserProfile = /*#__PURE__*/function (_React$Component) {
+  _inherits(UserProfile, _React$Component);
+
+  var _super = _createSuper(UserProfile);
+
+  function UserProfile(props) {
+    var _this;
+
+    _classCallCheck(this, UserProfile);
+
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "setActiveTab", function (activeTab) {
+      switch (activeTab) {
+        case tabStates[1]:
+          _this.getAndStoreFollowers().then();
+
+          break;
+
+        case tabStates[2]:
+          _this.getAndStoreFollowing().then();
+
+          break;
+
+        default:
+          _this.getAndStoreLoadData().then();
+
+          break;
+      }
+
+      _this.setState({
+        'activeTab': activeTab
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getAndStoreLoadData", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator2["default"].mark(function _callee() {
+      var res;
+      return _regenerator2["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _axios2["default"].get('/users/posts/' + _this.props.id);
+
+            case 2:
+              res = _context.sent;
+
+              _this.setState({
+                posts: res.data
+              });
+
+              _context.next = 6;
+              return _axios2["default"].get('/users/' + _this.props.id + '/stats');
+
+            case 6:
+              res = _context.sent;
+
+              _this.setState({
+                userStats: res.data
+              });
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    })));
+
+    _defineProperty(_assertThisInitialized(_this), "getAndStoreFollowing", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator2["default"].mark(function _callee2() {
+      var res;
+      return _regenerator2["default"].wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _axios2["default"].get('/following/' + _this.props.id);
+
+            case 2:
+              res = _context2.sent;
+
+              _this.setState({
+                following: res.data
+              });
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    })));
+
+    _defineProperty(_assertThisInitialized(_this), "getAndStoreFollowers", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator2["default"].mark(function _callee3() {
+      var res;
+      return _regenerator2["default"].wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return _axios2["default"].get('/followers/' + _this.props.id);
+
+            case 2:
+              res = _context3.sent;
+
+              _this.setState({
+                followers: res.data
+              });
+
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    })));
+
+    _defineProperty(_assertThisInitialized(_this), "getNavClasses", function (index) {
+      return 'nav-link ' + (tabStates[index] === _this.state.activeTab ? 'active' : "");
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "addToPostArr", function (post) {
+      var posts = [post].concat(_toConsumableArray(_this.state.posts));
+
+      _this.setState({
+        posts: posts
+      });
+
+      var userStats = _this.state.userStats;
+      userStats['posts_count']++;
+
+      _this.setState({
+        userStats: userStats
+      });
+    });
+
+    _this.state = {
+      posts: [],
+      activeTab: tabStates[0],
+      followers: [],
+      following: [],
+      userStats: {
+        followers_count: 0,
+        following_count: 0,
+        posts_count: 0
+      }
+    };
+    return _this;
+  }
+
+  _createClass(UserProfile, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getAndStoreLoadData().then();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var userOnPersonalPg = this.props.userOnPersonalPage;
+      var activeTab = this.state.activeTab;
+      var tabHtml, createPostHtml;
+
+      if (activeTab === 'posts') {
+        if (userOnPersonalPg) {
+          createPostHtml = /*#__PURE__*/_react2["default"].createElement(_CreatePost2["default"], {
+            addToParentPostArr: this.addToPostArr
+          });
+        }
+
+        tabHtml = /*#__PURE__*/_react2["default"].createElement(_Posts2["default"], {
+          posts: this.state.posts
+        });
+      } else if (activeTab === 'followers') {
+        tabHtml = /*#__PURE__*/_react2["default"].createElement(_ListOfUsers2["default"], {
+          users: this.state.followers
+        });
+      } else if (activeTab === 'following') {
+        tabHtml = /*#__PURE__*/_react2["default"].createElement(_ListOfUsers2["default"], {
+          users: this.state.following
+        });
+      }
+
+      return /*#__PURE__*/_react2["default"].createElement("div", {
+        className: "container"
+      }, /*#__PURE__*/_react2["default"].createElement("div", {
+        className: "row no-gutters"
+      }, /*#__PURE__*/_react2["default"].createElement("div", {
+        className: "col-10"
+      }, /*#__PURE__*/_react2["default"].createElement("ul", {
+        className: "nav nav-tabs"
+      }, /*#__PURE__*/_react2["default"].createElement("li", {
+        className: "nav-item"
+      }, /*#__PURE__*/_react2["default"].createElement("a", {
+        className: this.getNavClasses(0),
+        href: "#",
+        onClick: function onClick() {
+          return _this2.setActiveTab(tabStates[0]);
+        }
+      }, "Tweets ", /*#__PURE__*/_react2["default"].createElement("br", null), this.state.userStats.posts_count)), /*#__PURE__*/_react2["default"].createElement("li", {
+        className: "nav-item"
+      }, /*#__PURE__*/_react2["default"].createElement("a", {
+        className: this.getNavClasses(1),
+        href: "#",
+        onClick: function onClick() {
+          return _this2.setActiveTab(tabStates[1]);
+        }
+      }, "Followers ", /*#__PURE__*/_react2["default"].createElement("br", null), this.state.userStats.followers_count)), /*#__PURE__*/_react2["default"].createElement("li", {
+        className: "nav-item"
+      }, /*#__PURE__*/_react2["default"].createElement("a", {
+        className: this.getNavClasses(2),
+        href: "#",
+        onClick: function onClick() {
+          return _this2.setActiveTab(tabStates[2]);
+        }
+      }, "Following ", /*#__PURE__*/_react2["default"].createElement("br", null), this.state.userStats.following_count)))), !userOnPersonalPg && /*#__PURE__*/_react2["default"].createElement("div", {
+        className: "col-2 nav nav-tabs justify-content-end"
+      }, /*#__PURE__*/_react2["default"].createElement("button", {
+        className: "btn btn-info"
+      }, "Follow"))), createPostHtml, tabHtml);
+    }
+  }]);
+
+  return UserProfile;
+}(_react2["default"].Component);
+
+exports["default"] = UserProfile;
 
 /***/ }),
 

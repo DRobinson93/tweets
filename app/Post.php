@@ -8,11 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
-    protected $appends = ['auth_user_like_id'];
+    protected $appends = ['auth_user_like_id', 'user', 'likes_count', 'comments_count'];
 
     protected $fillable = [
         'value', 'user_id'
     ];
+
+    public function getLikesCountAttribute()
+    {
+        return $this->likes()->count();
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
+    }
 
     public function user()
     {

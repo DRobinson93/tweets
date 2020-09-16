@@ -4,6 +4,7 @@ import SocialBtn from './presontational/SocialBtn';
 import UserInfo from './Presontational/UserInfo';
 import Comments from './Comments';
 import axios from 'axios';
+import ImgAndContent from "./Presontational/ImgAndContent";
 
 class Post extends React.Component {
     constructor(props) {
@@ -42,7 +43,6 @@ class Post extends React.Component {
         axios.post('/postLikes/'+this.props.id)
             .then( (response) => {
                 this.setState({
-                    alert: {text:'Like added', type:'success'},
                     numOfLikes: this.state.numOfLikes + 1,
                     auth_user_like_id: response.id
                 });
@@ -73,31 +73,25 @@ class Post extends React.Component {
             commentsDiv = "";
         }
         return (
-            <div className="row no-gutters">
-                <div className="col-2 col-md-1 px-2">
-                    <img src={this.props.user.avatar_public_url} alt="avatar"
-                         className="img-thumbnail rounded-circle float-right mr-2"/>
+            <ImgAndContent imgUrl={this.props.user.avatar_public_url}>
+                <h5 className="m-0">
+                    <UserInfo date={this.props.created_at} user={this.props.user}/>
+                </h5>
+                <div className="my-1">
+                    {this.props.value}
                 </div>
-                <div className="col-10 col-md-11">
-                    <h5 className="m-0">
-                        <UserInfo user={this.props.user}/>
-                    </h5>
-                    <div className="my-1">
-                        {this.props.value}
-                    </div>
-                    <div className="row no-gutters w-100">
-                        <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
-                        <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment"
-                                   className="text-center"
-                                   text={this.state.numOfComments} onClick={this.toggleShowComments}/>
-                        <SocialBtn testId={"post"+this.props.id+"likebtn"} className="pull-right"
-                                   onClick={this.handleLikeChange} text={this.state.numOfLikes}
-                                   icon="heart" highlight={this.state.authUserLiked}/>
-                    </div>
-                    <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
-                    {commentsDiv}
+                <div className="row no-gutters w-100">
+                    <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
+                    <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment"
+                               className="text-center"
+                               text={this.state.numOfComments} onClick={this.toggleShowComments}/>
+                    <SocialBtn testId={"post"+this.props.id+"likebtn"} className="pull-right"
+                               onClick={this.handleLikeChange} text={this.state.numOfLikes}
+                               icon="heart" highlight={this.state.authUserLiked}/>
                 </div>
-            </div>
+                <AlertMessage show="true" type={this.state.alert.type} text={this.state.alert.text}/>
+                {commentsDiv}
+            </ImgAndContent>
         );
     }
 }

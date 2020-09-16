@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
@@ -25,5 +26,10 @@ class Comment extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    public function getCreatedAtAttribute($dateStr){
+        $date = Carbon::parse($dateStr);
+        return $date->diffForHumans(null, true, true);
     }
 }
