@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * return the main page for a user
      *
@@ -27,8 +32,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $posts = $user->posts()->get();
-        return response($posts);
+        $postIds = $user->posts()->pluck('id')->toArray();
+        $rePostIds = $user->reposts()->pluck('post_id')->toArray();
+        $allIds= array_merge($postIds, $rePostIds);
+        $allPosts =  Post::whereIn('id', $allIds)->latest()->get();
+        return response($allPosts);
     }
 
     /**

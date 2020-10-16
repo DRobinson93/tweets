@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUsernameAndAvatarToUser extends Migration
+class AddAvatarToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class AddUsernameAndAvatarToUser extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('avatar')->default('user.jpg');
-            $table->string('username')->nullable(false);
         });
     }
 

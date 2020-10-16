@@ -14,14 +14,18 @@ class Post extends React.Component {
             alert: {},
             numOfLikes: props.likes_count,
             numOfComments: props.comments_count,
-            numOfRetweets: props.retweets_count,
+            numOfReposts: props.reposts_count,
             authUserLiked: props.auth_user_like_id !== null,
+            authUserRetweeted: props.auth_user_retweet_id !== null,
             showCommentsDiv: false
         };
     }
 
     toggleLiked = () => {
         this.setState({authUserLiked : !this.state.authUserLiked});
+    }
+    toggleRetweeted = () => {
+        this.setState({authUserRetweeted : !this.state.authUserRetweeted});
     }
     setNumOfComments = (numOf) => {
         this.setState({numOfComments: numOf})
@@ -35,8 +39,8 @@ class Post extends React.Component {
                 });
                 this.toggleLiked();
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch( (error) => {
+                this.displayError(error);
             });
     }
     like = () => {
@@ -48,12 +52,51 @@ class Post extends React.Component {
                 });
                 this.toggleLiked();
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch( (error) => {
+                this.displayError(error);
             });
+    }
+    displayError = (error) => {
+        const msg = error.response.data.message;
+        this.setState({
+            alert: {text: msg, type: 'info'}
+        });
     }
     toggleShowComments = () =>{
         this.setState({showCommentsDiv: !this.state.showCommentsDiv})
+    }
+    toggleRetweet = () =>{
+        if(this.props.isAuthUsers){
+            this.setState({
+                alert: {text: 'You can not repost your post', type: 'info'}
+            });
+        }
+        if(this.state.authUserRetweeted){ //remove repost
+            axios.delete('/reposts/'+this.props.auth_user_retweet_id)
+                .then((response) =>{
+                    this.setState({
+                        alert: {text:'Retweet removed', type:'success'},
+                        numOfReposts: this.state.numOfReposts - 1
+                    });
+                    this.toggleRetweeted();
+                })
+                .catch( (error) => {
+                    this.displayError(error);
+                });
+        }
+        else{ //add repost
+            axios.post('/reposts/'+this.props.id)
+                .then( (response) => {
+                    this.setState({
+                        numOfReposts: this.state.numOfReposts + 1,
+                        auth_user_retweet_id: response.id
+                    });
+                    this.toggleRetweeted();
+                })
+                .catch( (error) => {
+                    this.displayError(error);
+                });
+        }
     }
     handleLikeChange = () =>{
         const liked = this.state.authUserLiked;
@@ -81,7 +124,11 @@ class Post extends React.Component {
                     {this.props.value}
                 </div>
                 <div className="row no-gutters w-100">
-                    <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet" text={this.state.numOfRetweets}/>
+                    <SocialBtn testId={"post"+this.props.id+"retweetbtn"} icon="retweet"
+                               text={this.state.numOfReposts}
+                               onClick={this.toggleRetweet}
+                               highlight={this.state.authUserRetweeted}
+                    />
                     <SocialBtn testId={"post"+this.props.id+"commentbtn"} icon="comment"
                                className="text-center"
                                text={this.state.numOfComments} onClick={this.toggleShowComments}/>

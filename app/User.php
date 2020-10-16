@@ -77,4 +77,9 @@ class User extends Authenticatable
         $date = Carbon::parse($dateStr);
         return $date->diffForHumans(null, true, true);
     }
+
+    public function reposts()
+    {
+        return $this->hasMany('App\Repost');
+    }
 }

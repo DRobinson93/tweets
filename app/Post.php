@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
-    protected $appends = ['auth_user_like_id', 'user', 'likes_count', 'comments_count'];
+    const REPOST_OWN_POST_ERROR = 'You can not repost your own post';
+
+    protected $appends = ['auth_user_like_id', 'auth_user_retweet_id', 'user', 'likes_count', 'comments_count', 'reposts_count', 'is_auth_users'];
 
     protected $fillable = [
         'value', 'user_id'
@@ -22,6 +24,11 @@ class Post extends Model
     public function getCommentsCountAttribute()
     {
         return $this->comments()->count();
+    }
+
+    public function getRepostsCountAttribute()
+    {
+        return $this->reposts()->count();
     }
 
     public function getUserAttribute()
@@ -38,15 +45,30 @@ class Post extends Model
     {
         return $this->hasMany('App\PostLike');
     }
+    public function reposts()
+    {
+        return $this->hasMany('App\Repost');
+    }
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    public function getIsAuthUsersAttribute()
+    {
+        return $this->id === Auth::id();
     }
 
     public function getAuthUserLikeIdAttribute()
     {
         $like = $this->likes()->where('user_id',  Auth::user()->id)->first();
         return $like->id ?? null;
+    }
+
+    public function getAuthUserRetweetIdAttribute()
+    {
+        $reposts = $this->reposts()->where('user_id',  Auth::user()->id)->first();
+        return $reposts->id ?? null;
     }
 
     public function getCreatedAtAttribute($dateStr){

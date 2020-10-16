@@ -75193,6 +75193,12 @@ var Post = /*#__PURE__*/function (_React$Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "toggleRetweeted", function () {
+      _this.setState({
+        authUserRetweeted: !_this.state.authUserRetweeted
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "setNumOfComments", function (numOf) {
       _this.setState({
         numOfComments: numOf
@@ -75211,7 +75217,7 @@ var Post = /*#__PURE__*/function (_React$Component) {
 
         _this.toggleLiked();
       })["catch"](function (error) {
-        console.log(error);
+        _this.displayError(error);
       });
     });
 
@@ -75224,7 +75230,18 @@ var Post = /*#__PURE__*/function (_React$Component) {
 
         _this.toggleLiked();
       })["catch"](function (error) {
-        console.log(error);
+        _this.displayError(error);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "displayError", function (error) {
+      var msg = error.response.data.message;
+
+      _this.setState({
+        alert: {
+          text: msg,
+          type: 'info'
+        }
       });
     });
 
@@ -75232,6 +75249,46 @@ var Post = /*#__PURE__*/function (_React$Component) {
       _this.setState({
         showCommentsDiv: !_this.state.showCommentsDiv
       });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "toggleRetweet", function () {
+      if (_this.props.isAuthUsers) {
+        _this.setState({
+          alert: {
+            text: 'You can not repost your post',
+            type: 'info'
+          }
+        });
+      }
+
+      if (_this.state.authUserRetweeted) {
+        //remove repost
+        _axios2["default"]["delete"]('/reposts/' + _this.props.auth_user_retweet_id).then(function (response) {
+          _this.setState({
+            alert: {
+              text: 'Retweet removed',
+              type: 'success'
+            },
+            numOfReposts: _this.state.numOfReposts - 1
+          });
+
+          _this.toggleRetweeted();
+        })["catch"](function (error) {
+          _this.displayError(error);
+        });
+      } else {
+        //add repost
+        _axios2["default"].post('/reposts/' + _this.props.id).then(function (response) {
+          _this.setState({
+            numOfReposts: _this.state.numOfReposts + 1,
+            auth_user_retweet_id: response.id
+          });
+
+          _this.toggleRetweeted();
+        })["catch"](function (error) {
+          _this.displayError(error);
+        });
+      }
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleLikeChange", function () {
@@ -75252,8 +75309,9 @@ var Post = /*#__PURE__*/function (_React$Component) {
       alert: {},
       numOfLikes: props.likes_count,
       numOfComments: props.comments_count,
-      numOfRetweets: props.retweets_count,
+      numOfReposts: props.reposts_count,
       authUserLiked: props.auth_user_like_id !== null,
+      authUserRetweeted: props.auth_user_retweet_id !== null,
       showCommentsDiv: false
     };
     return _this;
@@ -75287,7 +75345,9 @@ var Post = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/_react2["default"].createElement(_SocialBtn2["default"], {
         testId: "post" + this.props.id + "retweetbtn",
         icon: "retweet",
-        text: this.state.numOfRetweets
+        text: this.state.numOfReposts,
+        onClick: this.toggleRetweet,
+        highlight: this.state.authUserRetweeted
       }), /*#__PURE__*/_react2["default"].createElement(_SocialBtn2["default"], {
         testId: "post" + this.props.id + "commentbtn",
         icon: "comment",

@@ -19,6 +19,9 @@ Route::get('/', 'HomeController@index');
 
 Route::get('posts/all', 'PostController@showAll');
 Route::resource('posts', 'PostController');
+Route::post('reposts/{post}', 'PostController@storeRepost')->name('repost.store');
+Route::delete('reposts/{Repost}', 'PostController@destroyRepost');
+
 Route::resource('postLikes', 'PostLikeController',  ['only' => ['destroy']]);
 Route::post('postLikes/{post}', 'PostLikeController@store');
 Route::resource('commentLikes', 'CommentLikeController',  ['only' => ['destroy']]);
